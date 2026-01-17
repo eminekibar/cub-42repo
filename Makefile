@@ -14,7 +14,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 -O0
 RM = rm -rf
 
-NAME = cub3d
+NAME = cub3D
 
 # --- DİZİNLER ---
 SRC_PATH = ./srcs/
