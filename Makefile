@@ -11,25 +11,25 @@
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -O0
+CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
 
-NAME = cub3d
+NAME = cub3D
 
-# --- DİZİNLER ---
+# --- PATHS ---
 SRC_PATH = ./srcs/
 INC_PATH = ./includes/
 OBJ_PATH = ./objs/
 LIB_DIR = ./lib/
 
-# --- KÜTÜPHANELER ---
+# --- LIBS ---
 LIBFT_PATH = $(LIB_DIR)libft/
 LIBFT = $(LIBFT_PATH)libft.a
 
 MLX_PATH    = $(LIB_DIR)minilibx-linux/
 MLX = $(MLX_PATH)libmlx.a
 
-# --- KAYNAK DOSYALARI ---
+# --- SOURCES ---
 SRC = main.c \
 		parser/parser_utils.c \
 		parser/parser.c \
@@ -62,34 +62,32 @@ SRCS    = $(addprefix $(SRC_PATH), $(SRC))
 OBJ     = $(SRC:.c=.o)
 OBJS    = $(addprefix $(OBJ_PATH), $(OBJ))
 
-# --- FLAG'LER ---
+# --- FLAGS ---
 INC = -I $(INC_PATH) -I $(LIBFT_PATH) -I $(MLX_PATH)
-# Kütüphane Yolları (-L) ve Kütüphane Adları (-l)
+# Library Paths (-L) and Library Names (-l)
 LFLAGS = -L$(LIBFT_PATH) -lft -L$(MLX_PATH) -lmlx
 MLXFLAGS = -lXext -lX11 -lm -lz
 
-# --- RENKLER ---
+# --- COLORS ---
 COLOR_RESET='\033[0m'
 COLOR_RED='\033[0;31m'
 COLOR_GREEN='\033[0;32m'
 COLOR_YELLOW='\033[0;33m'
 COLOR_PURPLE='\033[0;35m'
 
-# --- KURALLAR ---
+# --- RULES ---
 all: $(OBJ_PATH) $(LIBFT) $(MLX) $(NAME)
 
 $(OBJ_PATH):
 	mkdir -p $(OBJ_PATH)
 
-# .c dosyalarını .o dosyalarına derler
+# Compiles .c files to .o files
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
-	mkdir -p $(dir $@) # Alt klasörleri otomatik oluştur
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 	@echo "$(PURPLE)Compiled:$(RESET) $<"
 
-# --- HATA BURADAYDI, DOĞRU SIRALAMA BUDUR ---
-# Önce derlenmiş .o dosyaları, sonra kütüphane yolları ve adları,
-# en son -o ile programın adı verilir.
+# Link .o files with libraries and create the executable
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)Linking $(NAME)...$(RESET)"
 	$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) $(MLXFLAGS) -o $(NAME)
